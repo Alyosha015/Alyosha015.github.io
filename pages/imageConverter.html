@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>StormTools Image Converter</title>
+        <link rel="stylesheet" href="/styles.css">
+    </head>
+
+    <body>
+        <header class="header">
+            <a href="/index.html">Home</a>
+            <a id="seperator">|</a>
+            <a href="/pages/imageConverter.html">Image To Paintblock</a>
+            <a id="seperator">|</a>
+            <a href="/pages/vehicleWeatherer.html">Vehicle Weatherer</a>
+        </header>
+
+        <div id="body">
+            <h1>Image Converter</h1>
+            Note: I have an executable version of the image converter, which has more features: <a href="https://github.com/Alyosha015/Stormworks-Image-To-Paintblock">Image Converter</a>. You can also scroll down on that page to see example images of the optimization feature I described in step 4 of the tutorial.
+
+            <fieldset style="max-width:350px; padding:15px;">
+                <legend>Image Converter v0.1.0</legend>
+                <div class="row">
+                    
+                    <div class="column">
+                        <select id="modeSelect">
+                            <option value="0">Select Mode</option>
+                            <option value="1">Custom Dimensions</option>
+                            <option value="2">Custom Width</option>
+                            <option value="3">Custom Height</option>
+                            <option value="4">Don't Resize</option>
+                        </select>
+                        <label>Width&nbsp;</label> <input type="number" id="width" value="1" style="width:51%" disabled> <br>
+                        <label>Height</label> <input type="number" id="height" value="1" style="width:51%" disabled> <br>
+                        <label>Optimize?</label> <input type="checkbox" id="optimize" disabled>
+                    </div>
+
+                    <div class="column">
+                        <button id="selectFile">Select File</button>
+                        <button id="generateXML" disabled>Generate XML</button>
+                        <label>Threshold</label> <input type="number" id="threshold" value="0" style="width: 34%" disabled>
+                    </div>
+
+                </div>
+
+                <input type="file" id="hiddenSelectFile" hidden>
+            
+            </fieldset>
+
+            <h2>Tutorial</h2>
+            <ol>
+                <li>
+                    Click <b>Select File</b> and select the image you want to turn into paintblock. Not all file formats are supported, which you can spot if the image size in blocks isn't being calculated propertly or the vehicle file doesn't open in Stormworks.
+                </li>
+                <li>
+                    Select a resize mode from the dropdown. The different modes are:
+                    <ul>
+                        <li>Custom Dimensions - Allows stretching the image by any width and height values.</li>
+                        <li>Custom Width - Allows entering a width for the image, the height is calculated automatically to keep the aspect ratio.</li>
+                        <li>Custom Height - Allows entering a height for the image, the width is calculated automatically to keep the aspect ratio.</li>
+                        <li>Don't Resize - The image isn't resized, and is copied pixel for pixel onto paintblocks.</li>
+                    </ul>
+                </li>
+                <li>
+                    Depending on which mode you choose, set the width or height of the image in blocks.
+                </li>
+                <li>
+                    If you want the paintblock output to be optimized (where blocks with similar pixels (like the background of a blueprint) are replaced with a regular block with an average of the pixel's colors, which significantly helps with lag in the editor), check the <b>Optimize?</b> checkbox. You can also change the optimization threshold, which controls how much the pixels can vary and still be turned into a block. Keeping it at 0 usually works, but for images with noise like JPG's I recomend setting it to ~20. You can also set it to 255, which causes the program to generate only regular blocks, and is useful for large blueprints where fine detail isn't needed, like ships.
+                </li>
+                <li>
+                    Click <b>Generate XML</b>, and the vehicle file will be generated and downloaded (this may take some time, a 128x128 meter blueprint took over a minute, smaller ones should be almost instant). Copy if from your downloads folder to the stormworks vehicle folder: <b>%AppData%\Stormworks\data\vehicles\</b>. (One way to reach the folder is to press Windows+R to open Run, then paste the path in and press enter).
+                </li>
+            </ol>
+        </div>
+        <canvas id="imageCanvas" hidden></canvas>
+        <canvas id="resizedCanvas" hidden></canvas>
+    </body>
+
+    <script src="/src/ImageConverter.js"></script>
+</html>

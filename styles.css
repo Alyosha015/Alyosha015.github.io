@@ -1,0 +1,168 @@
+:root {
+    --text: #DDDDDD;
+    --textDisabled: #777777;
+    --bg_dark: #1E1E23;
+    --bg_med: #28282F;
+    --bg_light: #303039;
+
+    --buttonHover:#222226;
+    --buttonClicked: #404049;
+
+    --h1TextColor: #A0D030;
+    --linkTextColor: #3C91E6;
+    --codeTextColor: #d7c60d;
+
+    --borderColor: #505050;
+
+    font-family: "Arial";
+    background-color: var(--bg_med);
+    line-height:1.5;
+}
+
+.header {
+    margin: 0;
+    padding: 5px 0px 5px 0px;
+    text-align: center;
+    background-color: var(--bg_dark);
+}
+
+.header a {
+    color: var(--text);
+    font-size: xx-large;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 2px 12px 2px 12px;
+}
+
+.header #seperator {
+    padding: 2px 0px 2px 0px;
+}
+
+a:hover:not(#seperator) {
+    background-color: var(--bg_light);
+    transition: 75ms;
+}
+
+body {
+    margin: auto;
+    padding: 0;
+    border: 2px solid var(var(--text));
+}
+
+#body {
+    color: var(--text);
+    margin: auto;
+    width: 60%;
+    font-size: large;
+    padding: 0px 25px 30px 25px;
+    border: 2px solid var(--bg_dark);
+    background-color: var(--bg_light);
+}
+
+h1 {
+    color: var(--h1TextColor);
+    font-family: monospace;
+    line-height: 0.75;
+}
+
+h2 {
+    color: var(--h1TextColor);
+    font-family: monospace;
+    font-size: x-large;
+}
+
+a {
+    color: var(--linkTextColor);
+    font-family: monospace;
+    font-size: x-large;
+}
+
+b {
+    color: var(--codeTextColor);
+    font-family: monospace;
+    font-size: large;
+}
+
+legend {
+    color: var(--h1TextColor);
+    font-family: monospace;
+    font-size: x-large;
+}
+
+.row {
+    display: flex;
+}
+
+.column {
+    flex: 50%;
+}
+
+.file {
+    opacity: 0;
+    position: absolute;
+}
+
+#modeSelect {
+    color:var(--text);
+    font-family: monospace;
+    width: 170px;
+    height: 50px;
+    background: var(--bg_dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: x-large;
+    margin: 3px 0px 3px 0px;
+}
+
+label {
+    font-family: monospace;
+    font-size: x-large;
+}
+
+button {
+    font-family: monospace;
+    color:var(--textDisabled);
+    width: 175px;
+    height: 54px;
+    background: var(--bg_dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: x-large;
+    border: 0px;
+    margin: 3px 0px 3px 0px;
+}
+
+button:enabled {
+    color:var(--text);
+}
+
+button:hover:enabled:not(:active) {
+    background-color: var(--buttonHover);
+}
+
+button:active:not(:disabled) {
+    background-color: var(--buttonClicked);
+}
+
+input:not(#hiddenSelectFile) {
+    border: 0px;
+    font-family: monospace;
+    font-size: large;
+    display: inline-block;
+    background-color: var(--bg_dark);
+    margin: 3px 0px 3px 0px;
+}
+
+input:enabled {
+    color: var(--text);
+}
+
+input:hover:enabled {
+    cursor:text;
+}
+
+input[type=number]::-webkit-inner-spin-button {
+    opacity: 1;
+}
