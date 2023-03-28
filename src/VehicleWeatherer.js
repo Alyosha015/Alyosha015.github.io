@@ -25,7 +25,6 @@ let generateXML = document.getElementById("generateXML");
 
 selectFile.addEventListener("click", function() {
     hiddenSelectFile.click();
-    CalculateWidthHeight();
 })
 
 hiddenSelectFile.addEventListener("change", function() {
@@ -56,6 +55,8 @@ generateXML.addEventListener("click", function() {
     if(fileSelected && !generating) {
         generating=true;
         generateXML.disabled = true;
+        
+        data = data.replaceAll("\n","&#xA;");
 
         xmlDoc = praser.parseFromString(data, "text/xml");
         const rgb = colorToWeather.value.split(" ");
