@@ -8,6 +8,7 @@ let generating = false;
 let r = 0;
 let g = 0;
 let b = 0;
+let variation = 0;
 let colorNum = 0;
 let colors;
 let intensity = 1;
@@ -18,6 +19,7 @@ let originalColorSide = "";
 
 let hiddenSelectFile = document.querySelector("input[type=\"file\"]");
 let colorToWeather = document.getElementById("colorToWeather");
+let colorVariation = document.getElementById("variation");
 let numColors = document.getElementById("numColors");
 let percentToWeather = document.getElementById("percentToWeather");
 let selectFile = document.getElementById("selectFile");
@@ -43,12 +45,16 @@ hiddenSelectFile.addEventListener("change", function() {
     }
 })
 
+colorVariation.addEventListener("change", function() {
+    colorVariation.value = Math.round(Clamp(colorVariation.value, 1, 255));
+})
+
 numColors.addEventListener("change", function() {
-    numColors.value = Clamp(numColors.value, 1, 999);
+    numColors.value = Math.round(Clamp(numColors.value, 1, 999));
 })
 
 percentToWeather.addEventListener("change", function() {
-    percentToWeather.value = Clamp(percentToWeather.value, 1, 100);
+    percentToWeather.value = Math.round(Clamp(percentToWeather.value, 1, 100));
 })
 
 generateXML.addEventListener("click", function() {
@@ -64,15 +70,19 @@ generateXML.addEventListener("click", function() {
             alert("\""+colorToWeather.value+"\" is not a valid rgb input.");
             return;
         }
-        r = Clamp(Number(rgb[0]),0,255);
-        g = Clamp(Number(rgb[1]),0,255);
-        b = Clamp(Number(rgb[2]),0,255);
+        r = Math.round(Clamp(Number(rgb[0]),0,255));
+        g = Math.round(Clamp(Number(rgb[1]),0,255));
+        b = Math.round(Clamp(Number(rgb[2]),0,255));
 
         originalColorIsWhite = (r===255 && g===255 && b===255);
         originalColor = ColorToStormworksHex(r, g, b, false);
         originalColorSide = ColorToStormworksHex(r, g, b, true);
         colorNum = numColors.value;
-        colors = GenColors(colorNum);
+        variation = colorVariation.value;
+        colors = GenColors(colorNum, [r, g, b], variation);
+        if(!colors) {
+            return;
+        }
         intensity = percentToWeather.value;
 
         xmlDoc = Weather(xmlDoc);
@@ -151,11 +161,31 @@ function RandomColorBCAC() {
     return colors[Random(0, colors.length)];
 }
 
-function GenColors(colorNum) {
+function GenColors(colorNum, colorToWeather, variation) {
+    let genAttempts = 0;
     colors = new Array(colorNum);
     colors[0] = ColorToStormworksHex(r, g, b, false);
     for(let i=1;i<colorNum;i++) {
-        rgb = ColorToStormworksHex(Random(0,255), Random(0,255), Random(0,255), false);
+        genAttempts++;
+        if(genAttempts > 10000) {
+            alert("Variation choosen does not allow amount of colors desired to be generated. Raise the variation or lower the number of colors and try again.");
+            return false;
+        }
+        rgb = ColorToStormworksHex(
+            Random(Clamp(colorToWeather[0]-variation,0,256),Clamp(colorToWeather[0]+variation,0,256)), 
+            Random(Clamp(colorToWeather[1]-variation,0,256),Clamp(colorToWeather[1]+variation,0,256)), 
+            Random(Clamp(colorToWeather[2]-variation,0,256),Clamp(colorToWeather[2]+variation,0,256)), false);
+        let foundSimilarColor = false;
+        for(let j=0;j<colors.length;j++) {
+            if(colors[j]===rgb) {
+                foundSimilarColor=true;
+                break;
+            }
+        }
+        if(foundSimilarColor) {
+            i--;
+            continue;
+        }
         colors[i] = rgb;
     }
     return colors;
