@@ -58,10 +58,7 @@ percentToWeather.addEventListener("change", function() {
 })
 
 generateXML.addEventListener("click", function() {
-    if(fileSelected && !generating) {
-        generating=true;
-        generateXML.disabled = true;
-        
+    if(fileSelected && !generating) {        
         data = data.replaceAll("\n","&#xA;");
 
         xmlDoc = praser.parseFromString(data, "text/xml");
@@ -83,6 +80,10 @@ generateXML.addEventListener("click", function() {
         if(!colors) {
             return;
         }
+
+        generating=true;
+        generateXML.disabled = true;
+
         intensity = percentToWeather.value;
 
         xmlDoc = Weather(xmlDoc);
